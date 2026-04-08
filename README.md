@@ -66,3 +66,5 @@ This environment incorporates multi-objective evaluation including:
 - Fairness in patient prioritization
 
 This project not only simulates decision-making but also captures ethical and operational trade-offs in real-world healthcare systems.
+
+Designed to be fully compatible with automated evaluation pipelines and reproducible benchmarking.
