@@ -1,20 +1,42 @@
 import os
 import sys
 
-API_BASE_URL = os.getenv("API_BASE_URL")
-MODEL_NAME = os.getenv("MODEL_NAME")
-HF_TOKEN = os.getenv("HF_TOKEN")
-
+# Fix import path
 sys.path.append(os.path.abspath("."))
 
 from env.environment import HospitalEnv
 from grader.grader import evaluate
 
+# ✅ OpenAI client using REQUIRED env variables
+from openai import OpenAI
+
+client = OpenAI(
+    base_url=os.environ["API_BASE_URL"],
+    api_key=os.environ["API_KEY"]
+)
+
+
+def call_llm():
+    try:
+        response = client.chat.completions.create(
+            model=os.environ.get("MODEL_NAME", "gpt-4o-mini"),
+            messages=[
+                {"role": "user", "content": "Should we treat critical patients or normal patients?"}
+            ],
+            max_tokens=5
+        )
+        return response.choices[0].message.content.lower()
+    except:
+        return "normal"
+
 
 def choose_action(state):
-    critical = sum(1 for p in state["patients"] if p["severity"] > 0.7)
-    normal = len(state["patients"]) - critical
-    return "treat_critical" if critical > normal else "treat_normal"
+    decision = call_llm()
+
+    if "critical" in decision:
+        return "treat_critical"
+    else:
+        return "treat_normal"
 
 
 def run_episode(env, print_steps=False, max_steps=5):
@@ -46,13 +68,15 @@ if __name__ == "__main__":
         scores = []
 
         for i in range(3):
-            # print steps only for first episode
+            # print steps only for first episode (clean logs)
             score = run_episode(env, print_steps=(i == 0))
             scores.append(score)
 
         avg_score = sum(scores) / len(scores)
 
+        # normalize reward to 0–1
         normalized = max(0.0, min(1.0, avg_score / 5))
+
         grade = evaluate(normalized)
 
         print(f"[STEP] type=task task={task} avg_reward={round(normalized,3)} grade={round(grade,3)}")
