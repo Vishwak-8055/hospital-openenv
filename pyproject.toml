@@ -1,15 +1,18 @@
 [project]
 name = "hospital-openenv"
 version = "0.1.0"
-description = "AI Hospital Triage OpenEnv Environment"
-authors = [
-    { name="Your Name" }
-]
+description = "AI Hospital Triage OpenEnv"
+authors = [{name="Your Name"}]
+
 dependencies = [
     "fastapi",
     "uvicorn",
-    "pydantic"
+    "pydantic",
+    "openenv>=0.2.0"
 ]
+
+[project.scripts]
+server = "server.app:app"
 
 [build-system]
 requires = ["setuptools", "wheel"]
