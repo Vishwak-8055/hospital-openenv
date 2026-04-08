@@ -1,12 +1,10 @@
 import os
 import sys
 
-# Required env vars
 API_BASE_URL = os.getenv("API_BASE_URL")
 MODEL_NAME = os.getenv("MODEL_NAME")
 HF_TOKEN = os.getenv("HF_TOKEN")
 
-# Fix import path
 sys.path.append(os.path.abspath("."))
 
 from env.environment import HospitalEnv
@@ -19,7 +17,7 @@ def choose_action(state):
     return "treat_critical" if critical > normal else "treat_normal"
 
 
-def run_episode(env, max_steps=5):
+def run_episode(env, print_steps=False, max_steps=5):
     state = env.reset()
     total_reward = 0.0
 
@@ -27,7 +25,8 @@ def run_episode(env, max_steps=5):
         action = choose_action(state)
         state, reward, done, _ = env.step(action)
 
-        print(f"[STEP] type=action step={step+1} action={action} reward={round(reward,3)}")
+        if print_steps:
+            print(f"[STEP] type=action step={step+1} action={action} reward={round(reward,3)}")
 
         total_reward += reward
 
@@ -46,15 +45,14 @@ if __name__ == "__main__":
 
         scores = []
 
-        for _ in range(3):
-            score = run_episode(env)
+        for i in range(3):
+            # print steps only for first episode
+            score = run_episode(env, print_steps=(i == 0))
             scores.append(score)
 
         avg_score = sum(scores) / len(scores)
 
-        # normalize to 0–1
         normalized = max(0.0, min(1.0, avg_score / 5))
-
         grade = evaluate(normalized)
 
         print(f"[STEP] type=task task={task} avg_reward={round(normalized,3)} grade={round(grade,3)}")
