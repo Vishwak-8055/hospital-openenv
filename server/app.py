@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request
 from pydantic import BaseModel
 from env.environment import HospitalEnv
+import uvicorn
 
 app = FastAPI()
 
@@ -13,7 +14,7 @@ class ActionInput(BaseModel):
 
 @app.get("/")
 def home(request: Request):
-    return {"status": "running"}  # handles ?logs=container too
+    return {"status": "running"}
 
 
 @app.post("/reset")
@@ -30,3 +31,13 @@ def step(input: ActionInput):
 @app.get("/state")
 def get_state():
     return {"state": env.state()}
+
+
+# ✅ REQUIRED MAIN FUNCTION
+def main():
+    uvicorn.run("server.app:app", host="0.0.0.0", port=7860)
+
+
+# ✅ REQUIRED ENTRY POINT
+if __name__ == "__main__":
+    main()
