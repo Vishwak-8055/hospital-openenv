@@ -6,4 +6,4 @@ COPY . .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-CMD ["python", "-u", "scripts/run_inference.py"]
+CMD ["python", "inference.py"]
