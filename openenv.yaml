@@ -1,0 +1,19 @@
+name: hospital_triage_env
+description: AI environment for hospital triage and resource allocation
+
+observation_space:
+  type: dict
+  properties:
+    patients:
+      type: list
+    resources:
+      type: dict
+
+action_space:
+  type: discrete
+  actions:
+    - treat_critical
+    - treat_normal
+    - wait
+
+reward_range: [0.0, 1.0]
