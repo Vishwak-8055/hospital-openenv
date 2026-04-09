@@ -75,7 +75,14 @@ if __name__ == "__main__":
         avg_score = sum(scores) / len(scores)
 
         # normalize reward to 0–1
-        normalized = max(0.0, min(1.0, avg_score / 5))
+        # normalize reward
+        normalized = avg_score / 5
+
+        # force strictly between (0,1)
+        if normalized <= 0:
+            normalized = 0.01
+        elif normalized >= 1:
+            normalized = 0.99
 
         grade = evaluate(normalized)
 
