@@ -86,6 +86,12 @@ if __name__ == "__main__":
 
         grade = evaluate(normalized)
 
-        print(f"[STEP] type=task task={task} avg_reward={round(normalized,3)} grade={round(grade,3)}")
+        # ensure grader score strictly in (0,1)
+        if grade <= 0:
+            grade = 0.01
+        elif grade >= 1:
+            grade = 0.99
+
+        print(f"[STEP] type=task task={task} score={round(grade,3)}")
 
     print("[END]")
