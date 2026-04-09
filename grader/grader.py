@@ -1,10 +1,10 @@
-def evaluate(total_reward):
+def evaluate(score):
 
-    if total_reward > 0.8:
-        return 1.0  # excellent
-    elif total_reward > 0.6:
-        return 0.8  # good
-    elif total_reward > 0.4:
-        return 0.6  # average
+    if score > 0.8:
+        return 0.95
+    elif score > 0.6:
+        return 0.8
+    elif score > 0.4:
+        return 0.6
     else:
-        return 0.3  # poor
+        return 0.4
