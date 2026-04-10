@@ -92,6 +92,12 @@ if __name__ == "__main__":
         elif grade >= 1:
             grade = 0.99
 
-        print(f"[STEP] type=task task={task} score={round(grade,3)}")
+        # ensure reward strictly between (0,1)
+        if grade <= 0:
+            grade = 0.01
+        elif grade >= 1:
+            grade = 0.99
+
+        print(f"[STEP] type=task task={task} reward={round(grade,3)}")
 
     print("[END]")
