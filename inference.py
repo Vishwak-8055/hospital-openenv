@@ -87,6 +87,7 @@ if __name__ == "__main__":
             grade = 0.99
 
         # ✅ FINAL FORMAT (VERY IMPORTANT)
-        print(f"[STEP] type=task task={task} reward={round(normalized,3)} grader={round(grade,3)}")
+        # STRICT FORMAT (ONLY THIS)
+        print(f"[STEP] task={task} reward={round(normalized,3)}")
 
     print("[END]")
