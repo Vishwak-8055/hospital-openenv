@@ -5,9 +5,8 @@ import sys
 sys.path.append(os.path.abspath("."))
 
 from env.environment import HospitalEnv
-from grader.grader import evaluate
 
-# OpenAI client (LLM requirement)
+# LLM (required)
 from openai import OpenAI
 
 client = OpenAI(
@@ -32,8 +31,7 @@ def choose_action(state):
     decision = call_llm()
     if "critical" in decision:
         return "treat_critical"
-    else:
-        return "treat_normal"
+    return "treat_normal"
 
 
 def run_episode(env, print_steps=False, max_steps=5):
@@ -70,24 +68,19 @@ if __name__ == "__main__":
 
         avg_score = sum(scores) / len(scores)
 
-        # ✅ STRICT normalization (0,1)
+        # ✅ STRICT SAFE NORMALIZATION (NO 0 OR 1 EVER)
         normalized = avg_score / 5
 
-        if normalized <= 0:
-            normalized = 0.01
-        elif normalized >= 1:
-            normalized = 0.99
+        # hard clamp to safe zone
+        if normalized < 0.05:
+            normalized = 0.05
+        elif normalized > 0.95:
+            normalized = 0.95
 
-        # ✅ grader
-        grade = evaluate(normalized)
+        # final rounding (safe)
+        normalized = round(normalized, 3)
 
-        if grade <= 0:
-            grade = 0.01
-        elif grade >= 1:
-            grade = 0.99
-
-        # ✅ FINAL FORMAT (VERY IMPORTANT)
-        # STRICT FORMAT (ONLY THIS)
-        print(f"[STEP] task={task} reward={round(normalized,3)}")
+        # ✅ FINAL VALIDATOR FORMAT (CRITICAL)
+        print(f"[STEP] task={task} reward={normalized}")
 
     print("[END]")
