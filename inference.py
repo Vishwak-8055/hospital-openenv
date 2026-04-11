@@ -33,15 +33,14 @@ def choose_action(state):
 
 def run_episode(env):
     state = env.reset()
-    total = 0.0
+    total = 0
 
     for _ in range(5):
         action = choose_action(state)
-        state, reward, _, info = env.step(action)
+        state, reward, _, _ = env.step(action)
+        total += reward
 
-        total += reward  # already graded
-
-    return total / 5
+    return total / 5   # average per episode
 
 
 if __name__ == "__main__":
@@ -53,6 +52,7 @@ if __name__ == "__main__":
     for task in tasks:
 
         env = HospitalEnv(task)
+
         scores = []
 
         for _ in range(3):
@@ -60,16 +60,14 @@ if __name__ == "__main__":
             scores.append(s)
 
         avg = sum(scores) / len(scores)
-
-        # FINAL STRICT CLAMP (SAFETY)
-        if avg <= 0:
-            avg = 0.2
-        elif avg >= 1:
-            avg = 0.8
-
         avg = round(avg, 3)
 
-        # ✅ ONLY THIS FORMAT
+        # FINAL HARD CLAMP (STRICT)
+        if avg <= 0.0:
+            avg = 0.001
+        elif avg >= 1.0:
+            avg = 0.999
+
         print(f"[STEP] task={task} reward={avg}")
 
     print("[END]")
