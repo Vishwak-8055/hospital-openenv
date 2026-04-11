@@ -17,3 +17,11 @@ action_space:
     - wait
 
 reward_range: [0.0, 1.0]
+
+tasks:
+  - id: easy
+    grader: grader.grader:evaluate
+  - id: medium
+    grader: grader.grader:evaluate
+  - id: hard
+    grader: grader.grader:evaluate
