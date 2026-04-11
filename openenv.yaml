@@ -20,8 +20,17 @@ reward_range: [0.0, 1.0]
 
 tasks:
   - id: easy
-    grader: grader.grader:evaluate
+    name: "Easy Triage Task"
+    description: "Handle easy scenarios"
+    difficulty: "easy"
+    grader: "grader.grader:evaluate"
   - id: medium
-    grader: grader.grader:evaluate
+    name: "Medium Triage Task"
+    description: "Handle medium scenarios"
+    difficulty: "medium"
+    grader: "grader.grader:evaluate"
   - id: hard
-    grader: grader.grader:evaluate
+    name: "Hard Triage Task"
+    description: "Handle hard scenarios"
+    difficulty: "hard"
+    grader: "grader.grader:evaluate"
