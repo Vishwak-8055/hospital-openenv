@@ -16,21 +16,21 @@ action_space:
     - treat_normal
     - wait
 
-reward_range: [0.0, 1.0]
+reward_range: [0.01, 0.99]
 
 tasks:
   - id: easy
     name: "Easy Triage Task"
     description: "Handle easy scenarios"
     difficulty: "easy"
-    grader: "grader.grader:evaluate"
+    grader: "tasks.easy.grader:grade"
   - id: medium
     name: "Medium Triage Task"
     description: "Handle medium scenarios"
     difficulty: "medium"
-    grader: "grader.grader:evaluate"
+    grader: "tasks.medium.grader:grade"
   - id: hard
     name: "Hard Triage Task"
     description: "Handle hard scenarios"
     difficulty: "hard"
-    grader: "grader.grader:evaluate"
+    grader: "tasks.hard.grader:grade"
