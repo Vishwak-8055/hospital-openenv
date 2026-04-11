@@ -1,18 +1,16 @@
-def grade(total_reward=0, **kwargs):
+def grade(total_reward=0.5, **kwargs):
     """
-    Maps a normalized total_reward (0.0 – 1.0) to a score strictly in (0, 1).
-    Called by the OpenEnv pipeline as the default/fallback grader.
+    Default/fallback grader. Always returns a value strictly in (0, 1).
     """
-    if total_reward > 0.8:
-        score = 0.95   # excellent
-    elif total_reward > 0.6:
-        score = 0.75   # good
-    elif total_reward > 0.4:
-        score = 0.55   # average
-    elif total_reward > 0.2:
-        score = 0.35   # below average
+    if total_reward >= 0.8:
+        score = 0.90
+    elif total_reward >= 0.6:
+        score = 0.72
+    elif total_reward >= 0.4:
+        score = 0.52
+    elif total_reward >= 0.2:
+        score = 0.32
     else:
-        score = 0.15   # poor
+        score = 0.14
 
-    # Strict clamp — must never reach 0.0 or 1.0
-    return max(0.01, min(0.99, score))
+    return max(0.01, min(0.99, float(score)))
