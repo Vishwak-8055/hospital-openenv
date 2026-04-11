@@ -14,9 +14,10 @@ class HospitalEnv:
 
         total_score = 0.0
 
-        for patient in self.state_data["patients"]:
+        for patient in self.state_data.get("patients", []):
 
-            if patient["severity"] > 0.7:
+            severity = patient.get("severity", 0.5)
+            if severity > 0.7:
                 if action == "treat_critical":
                     total_score += 1.0
                 else:
@@ -27,10 +28,13 @@ class HospitalEnv:
                 else:
                     total_score -= 0.2
 
-            total_score -= 0.01 * patient["wait_time"]
+            total_score -= 0.01 * patient.get("wait_time", 0)
 
-        max_possible = len(self.state_data["patients"])
-        reward = total_score / max_possible
+        max_possible = len(self.state_data.get("patients", []))
+        if max_possible == 0:
+            reward = 0.5
+        else:
+            reward = total_score / max_possible
 
         reward = (reward + 1) / 2
         reward = max(0.01, min(0.99, reward))
