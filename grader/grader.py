@@ -1,10 +1,9 @@
-def evaluate(total_reward):
-
+def grade(total_reward=0, **kwargs):
     if total_reward > 0.8:
-        return 0.99  # excellent
+        return 0.99
     elif total_reward > 0.6:
-        return 0.8  # good
+        return 0.8
     elif total_reward > 0.4:
-        return 0.6  # average
+        return 0.6
     else:
-        return 0.3  # poor
+        return 0.3
