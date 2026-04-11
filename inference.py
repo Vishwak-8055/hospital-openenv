@@ -1,9 +1,11 @@
 import os
 import sys
+import importlib
 
 sys.path.append(os.path.abspath("."))
 
 from env.environment import HospitalEnv
+
 from openai import OpenAI
 
 client = OpenAI(
@@ -43,8 +45,13 @@ def run_episode(env):
     return total / 5   # average per episode
 
 
-if __name__ == "__main__":
+def get_task_grader(task_id):
+    """Dynamically load the grade() function for a given task."""
+    module = importlib.import_module(f"tasks.{task_id}.grader")
+    return module.grade
 
+
+def main():
     print("[START]")
 
     tasks = ["easy", "medium", "hard"]
@@ -52,6 +59,7 @@ if __name__ == "__main__":
     for task in tasks:
 
         env = HospitalEnv(task)
+        grader = get_task_grader(task)
 
         scores = []
 
@@ -62,12 +70,19 @@ if __name__ == "__main__":
         avg = sum(scores) / len(scores)
         avg = round(avg, 3)
 
-        # FINAL HARD CLAMP (STRICT)
+        # Strict clamp on raw reward — must be in (0, 1)
         if avg <= 0.0:
             avg = 0.001
         elif avg >= 1.0:
             avg = 0.999
 
-        print(f"[STEP] task={task} reward={avg}")
+        # Run through the task grader to get final graded score
+        graded_score = grader(total_reward=avg)
+
+        print(f"[STEP] task={task} reward={avg} score={graded_score}")
 
     print("[END]")
+
+
+if __name__ == "__main__":
+    main()
