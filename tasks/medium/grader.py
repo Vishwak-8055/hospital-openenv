@@ -1,9 +1,17 @@
 def grade(total_reward=0, **kwargs):
-    if total_reward > 0.8:
-        return 0.99
-    elif total_reward > 0.6:
-        return 0.8
-    elif total_reward > 0.4:
-        return 0.6
+    """
+    Medium task grader — balanced thresholds for mixed-severity patient scenarios.
+    Returns a score strictly in (0, 1).
+    """
+    if total_reward > 0.75:
+        score = 0.90   # excellent on medium task
+    elif total_reward > 0.55:
+        score = 0.70   # good
+    elif total_reward > 0.35:
+        score = 0.50   # average
+    elif total_reward > 0.15:
+        score = 0.30   # poor
     else:
-        return 0.3
+        score = 0.12   # very poor
+
+    return max(0.01, min(0.99, score))
