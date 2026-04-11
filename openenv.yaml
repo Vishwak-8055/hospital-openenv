@@ -1,5 +1,10 @@
 name: hospital_triage_env
+version: "0.1.0"
+author: "Your Name"
 description: AI environment for hospital triage and resource allocation
+
+entry_point: "inference:main"
+grader: "grader.grader:grade"
 
 observation_space:
   type: dict
@@ -21,16 +26,16 @@ reward_range: [0.01, 0.99]
 tasks:
   - id: easy
     name: "Easy Triage Task"
-    description: "Handle easy scenarios"
+    description: "Handle easy scenarios with a single critical patient"
     difficulty: "easy"
     grader: "tasks.easy.grader:grade"
   - id: medium
     name: "Medium Triage Task"
-    description: "Handle medium scenarios"
+    description: "Handle medium scenarios with mixed-severity patients"
     difficulty: "medium"
     grader: "tasks.medium.grader:grade"
   - id: hard
     name: "Hard Triage Task"
-    description: "Handle hard scenarios"
+    description: "Handle hard scenarios with many randomized patients"
     difficulty: "hard"
     grader: "tasks.hard.grader:grade"
