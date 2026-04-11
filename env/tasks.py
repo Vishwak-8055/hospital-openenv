@@ -1,36 +1,28 @@
-import random
+def get_task(level):
 
-def get_task(task_level):
-
-    if task_level == "easy":
+    if level == "easy":
         return {
             "patients": [
-                {"id": 1, "severity": 0.8, "wait_time": 0, "condition": "fever"}
-            ],
-            "resources": {"icu_beds": 1, "doctors": 1}
+                {"id": 1, "severity": 0.8},
+                {"id": 2, "severity": 0.4}
+            ]
         }
 
-    elif task_level == "medium":
+    elif level == "medium":
         return {
             "patients": [
-                {"id": 1, "severity": 0.9, "wait_time": 2, "condition": "cardiac"},
-                {"id": 2, "severity": 0.5, "wait_time": 1, "condition": "injury"}
-            ],
-            "resources": {"icu_beds": 1, "doctors": 1}
+                {"id": 1, "severity": 0.9},
+                {"id": 2, "severity": 0.6},
+                {"id": 3, "severity": 0.3}
+            ]
         }
 
-    elif task_level == "hard":
-        patients = []
-
-        for i in range(1, 8):
-            patients.append({
-                "id": i,
-                "severity": round(random.uniform(0.3, 1.0), 2),
-                "wait_time": random.randint(0, 5),
-                "condition": "mixed"
-            })
-
+    elif level == "hard":
         return {
-            "patients": patients,
-            "resources": {"icu_beds": 2, "doctors": 1}
+            "patients": [
+                {"id": 1, "severity": 0.95},
+                {"id": 2, "severity": 0.7},
+                {"id": 3, "severity": 0.5},
+                {"id": 4, "severity": 0.3}
+            ]
         }
