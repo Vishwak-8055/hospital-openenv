@@ -1,7 +1,10 @@
-def evaluate(score):
-    # force STRICT (0,1)
-    if score <= 0:
-        return 0.2
-    elif score >= 1:
-        return 0.8
-    return score
+def evaluate(total_reward):
+
+    if total_reward > 0.8:
+        return 0.99  # excellent
+    elif total_reward > 0.6:
+        return 0.8  # good
+    elif total_reward > 0.4:
+        return 0.6  # average
+    else:
+        return 0.3  # poor
